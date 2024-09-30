@@ -14,12 +14,17 @@ public class Nova : MonoBehaviour
     [SerializeField] ParticleSystem _explosePart;
     [SerializeField] ParticleSystem _rotatePart;
 
+    [SerializeField] AudioClip _explosion;
+    private bool _soundPlayed = false;
+    [SerializeField] AudioSource _audioSource;
+    [SerializeField] AudioClip _explosionNull;
     private bool isDie = false;
 
     void Start()
     {
         _gameManager = FindObjectOfType<GameManager>();
         _camera = FindObjectOfType<Camera>();
+        _audioSource = FindObjectOfType<AudioSource>();
 
     }
 
@@ -75,6 +80,12 @@ public class Nova : MonoBehaviour
             this.GetComponent<MeshRenderer>().enabled = false;
             _rotatePart.Stop();
             _explosePart.Play();
+            if (!_soundPlayed)
+            {
+                _audioSource.PlayOneShot(_explosionNull, 0.6f);
+                _soundPlayed = true;
+
+            }
             yield return new WaitForSeconds(3);
             Destroy(gameObject);
         }
@@ -89,7 +100,12 @@ public class Nova : MonoBehaviour
             if (collider.tag == "Player")
             {
                 Vector3 direction = collider.transform.position - transform.position;
+                if (!_soundPlayed)
+                {
+                    _audioSource.PlayOneShot(_explosion, 0.6f);
+                    _soundPlayed = true;
 
+                }
                 direction = direction.normalized;
 
                 Rigidbody playerRigidbody = collider.gameObject.GetComponent<Rigidbody>();

@@ -15,9 +15,13 @@ public class CapsuleTemporelle : MonoBehaviour
     [SerializeField] GameManager gameManager;
 
     [SerializeField] TypeSentence _typeSentence;
+
+    [SerializeField] List<AudioClip> capsSounds = new List<AudioClip>();
+    [SerializeField] AudioSource capsAudioSource;
     void Start()
     {
         _cam = FindObjectOfType<Camera>().GetComponent<CameraFollow>();
+        capsAudioSource = FindAnyObjectByType<AudioSource>();
     }
 
     void Update()
@@ -45,7 +49,7 @@ public class CapsuleTemporelle : MonoBehaviour
                 _isActive = true;
                 gameManager.nbCaps++;
                 _uiCaps.text = gameManager.nbCaps.ToString();
-                
+                capsAudioSource.PlayOneShot(capsSounds[Random.Range(0,capsSounds.Count)], 0.6f);
                 gameManager.isCapsule = true;
                 yield return new WaitForSeconds(1.5f);
                 _cam.player = player;

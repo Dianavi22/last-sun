@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private TMP_Text tuto;
     [SerializeField] TypeSentence _typeSentence;
+    [SerializeField] List<AudioClip> keyboardClips = new List<AudioClip>();
+    [SerializeField] AudioSource audioSource;
 
     private bool _endParty = false;
 
@@ -28,9 +30,16 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator SetUp()
     {
+
         _typeSentence.WriteMachinEffect("Click on the stars to make them explode", tuto, 0.02f);
-        yield return new WaitForSeconds(3);
+        audioSource.PlayOneShot(keyboardClips[1]);
+        yield return new WaitForSeconds(0.5f);
+
+        audioSource.PlayOneShot(keyboardClips[0]);
+
+        yield return new WaitForSeconds(2);
         tuto.text = "";
+        audioSource.PlayOneShot(keyboardClips[0]);
         _typeSentence.WriteMachinEffect("Press escape to start over", tuto, 0.02f);
         yield return new WaitForSeconds(3);
 
@@ -42,10 +51,13 @@ public class GameManager : MonoBehaviour
         _endParty = true;
         tuto.text = "";
         tuto.gameObject.SetActive(true);
+        audioSource.PlayOneShot(keyboardClips[0]);
 
         _typeSentence.WriteMachinEffect("you found all the time capsules", tuto, 0.02f);
         yield return new WaitForSeconds(3);
         tuto.text = "";
+        audioSource.PlayOneShot(keyboardClips[1]);
+
         _typeSentence.WriteMachinEffect("The game will start again in", tuto, 0.02f);
         yield return new WaitForSeconds(3);
         tuto.text = "";

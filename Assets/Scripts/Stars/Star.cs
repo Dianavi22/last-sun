@@ -14,10 +14,17 @@ public class Star : MonoBehaviour
     [SerializeField] ParticleSystem _explosePart;
     [SerializeField] ParticleSystem _rotatePart;
 
+    [SerializeField] AudioClip _explosion;
+    [SerializeField] AudioClip _explosionNull;
+    [SerializeField] AudioSource _audioSource;
+
+    private bool _soundPlayed = false;
+
     private bool isDie = false;
     void Start()
     {
         _gameManager = FindObjectOfType<GameManager>();
+        _audioSource = FindObjectOfType<AudioSource>();
         _camera = FindObjectOfType<Camera>();
 
     }
@@ -54,11 +61,18 @@ public class Star : MonoBehaviour
     {
         if (!isDie)
         {
+
             isDie = true;
             this._sprite.SetActive(false);
             this.GetComponent<MeshRenderer>().enabled = false;
             _rotatePart.Stop();
             _explosePart.Play();
+            if (!_soundPlayed)
+            {
+                _audioSource.PlayOneShot(_explosionNull, 0.6f);
+                _soundPlayed = true;
+
+            }
             yield return new WaitForSeconds(3);
             Destroy(gameObject);
         }
@@ -90,6 +104,13 @@ public class Star : MonoBehaviour
             {
                 Vector3 direction = collider.transform.position - transform.position;
 
+                if (!_soundPlayed)
+                {
+                    _audioSource.PlayOneShot(_explosion, 0.6f);
+                    _soundPlayed = true;
+
+                }
+
                 direction = direction.normalized;
 
                 Rigidbody playerRigidbody = collider.gameObject.GetComponent<Rigidbody>();
@@ -97,6 +118,10 @@ public class Star : MonoBehaviour
                 collider.GetComponent<Player>().isMove = true;
                 _camera.GetComponent<ShakyCame>().isShaking = true;
 
+            }
+            else
+            {
+                
             }
         }
     }

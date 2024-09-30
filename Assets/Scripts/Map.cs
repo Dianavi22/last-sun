@@ -6,6 +6,9 @@ public class Map : MonoBehaviour
 {
 
     [SerializeField] private float mapRadius;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip wall;
+    private bool isWall = false;
 
     void Start()
     {
@@ -41,7 +44,11 @@ public class Map : MonoBehaviour
         {
             Collider playerCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider>();
             Vector3 direction = transform.position - playerCollider.transform.position;
-
+            if (!isWall)
+            {
+                audioSource.PlayOneShot(wall, 1f);
+                StartCoroutine(CooldownSound());
+            }
             direction = direction.normalized;
 
             Rigidbody playerRigidbody = playerCollider.gameObject.GetComponent<Rigidbody>();
@@ -50,6 +57,12 @@ public class Map : MonoBehaviour
             playerCollider.GetComponent<Player>().isMove = true;
         }
     }
+
+    private IEnumerator CooldownSound() {
+    yield return new WaitForSeconds(0.3f);
+        isWall = false;
+    }
+
 
 
 
