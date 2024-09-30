@@ -759,6 +759,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapRadius: 100
+  audioSource: {fileID: 1666201105}
+  wall: {fileID: 8300000, guid: c806484df6bedd449b4cba52ab54d597, type: 3}
 --- !u!1 &842809893
 GameObject:
   m_ObjectHideFlags: 0

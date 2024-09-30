@@ -5,16 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] GameObject credits;
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            credits.SetActive(false);
+        }
     }
 
     public void Quit()
@@ -25,5 +27,10 @@ public class MainMenu : MonoBehaviour
     public void LoadGame()
     {
         SceneManager.LoadScene(1);
+    }
+
+    public void OpenCredits()
+    {
+        credits.SetActive(true);
     }
 }
